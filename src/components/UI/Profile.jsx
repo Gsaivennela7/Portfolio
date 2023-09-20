@@ -3,10 +3,12 @@ import profileImg from '../../assets/images/profileImg.jpeg'
 import CountUp from 'react-countup';
 
 const Profile = () =>{
-    return <section className='pt-0' id='about'>
-        <div className='container pt-14'>
+    return (
+    <div className='container pt-14'>
+        <section className='pt-0' id='about'>
+        
             <div className='md:flex items-center justify-between sm:flex-col md:flex-row'>
-                <div className='w-full md:basis-1/2 ml-[300px]'>
+                <div className='w-full'>
                 <h5 data-aos ="fade-right"
                 data-aos-duration = "1500"
                 className= "text-headingColor font-[600] text-[16px]">
@@ -53,17 +55,17 @@ const Profile = () =>{
                             </span>
 
                             <span>
-                                <a href="#youtube" className='text-smallTextColor text-[18px] font-[600]'>
+                                <a href="https://www.youtube.com/channel/UC4VQETdGw7obCKEzS1UZfaw" className='text-smallTextColor text-[18px] font-[600]'>
                                     <i class="ri-youtube-line"></i>
                                 </a>
                             </span>
                             <span>
-                                <a href="#youtube" className='text-smallTextColor text-[18px] font-[600]'>
+                                <a href="https://github.com/Gsaivennela7" className='text-smallTextColor text-[18px] font-[600]'>
                                     <i class="ri-github-fill"></i>
                                 </a>
                             </span>
                             <span>
-                                <a href="#youtube" className='text-smallTextColor text-[18px] font-[600]'>
+                                <a href="https://www.linkedin.com/in/gsaivennela7" className='text-smallTextColor text-[18px] font-[600]'>
                                     <i class="ri-linkedin-box-fill"></i>
                                 </a>
                             </span>
@@ -99,8 +101,9 @@ const Profile = () =>{
                  </div>
 
             </div>
+            </section>
         </div>
-    </section>
+    );
 }
 
 export default Profile;

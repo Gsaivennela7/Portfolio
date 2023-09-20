@@ -1,22 +1,28 @@
 import React,{useState,useEffect} from 'react';
-import portfolios from '../../assets/data/portfolio.js';
 import data from '../../assets/data/portfolio.js'
+import Modal from "./Modal";
+
 
 const Portfolio = ()=>{
 const [nextItems,setNextItems] = useState(4);
-const [portfolio,setPortfolios] = useState(data);
+const [portfolios,setPortfolios] = useState(data);
 const [selectTab, setSelectTab] = useState('all');
+const [showModal, setShowModal] = useState(false);
+const [activeId, setActiveId] = useState(null);
 
 const loadMoreHandler = () =>{
  setNextItems(prev=> prev+3);
 };
 
+const showModalHandler = id =>{
+    setShowModal(true);
+    setActiveId(id);
+}
 useEffect(() =>{
 
 if(selectTab == 'all'){
     setPortfolios(data);
 }
-
 if(selectTab == 'Full-Stack'){
     const filteredData = data.filter(item=> item.category == 'Full Stack');
     setPortfolios(filteredData);
@@ -24,6 +30,7 @@ if(selectTab == 'Full-Stack'){
 
 if(selectTab == 'Data-Science'){
     const filteredData = data.filter(item=> item.category == 'Data');
+    console.log(filteredData);
     setPortfolios(filteredData);
 }
 
@@ -40,15 +47,15 @@ return (<section id ="portfolio">
             </div>
 
             <div className='flex gap-3'>
-                <button onClick={()=> selectTab('all')} className='text-smallTextColor border border-solid border-smallTextColor
-                py-2 px-4 rounded-[8px]'>
+                <button onClick={()=> setSelectTab('all')} className='text-smallTextColor border border-solid border-smallTextColor
+                py-2 px-4 rounded-[8px] hover:bg-primaryColor '>
                     All
                 </button>
-                <button className='text-smallTextColor border border-solid border-smallTextColor
+                <button onClick={()=> setSelectTab('Full-Stack')} className='text-smallTextColor border border-solid border-smallTextColor
                 py-2 px-4 rounded-[8px]'>
                     Full Stack development
                 </button>
-                <button className='text-smallTextColor border border-solid border-smallTextColor
+                <button onClick={()=> setSelectTab('Data-Science')} className='text-smallTextColor border border-solid border-smallTextColor
                 py-2 px-4 rounded-[8px]'>
                     Data Science
                 </button>
@@ -70,7 +77,7 @@ return (<section id ="portfolio">
                             <div className='w-full h-full bg-primaryColor bg-opacity-40 absolute
                             top-0 left-0 z-[5] hidden group-hover:block'>
                                 <div className='w-full h-full flex items-center justify-center'>
-                                    <button className='text-white bg-headingColor
+                                    <button onClick={()=>showModalHandler(portfolio.id)} className='text-white bg-headingColor
                                      hover:bg-smallTextColor py-2 px-4 rounded-[8px] font-[500]
                                      ease-in duration-200'>
                                         See Details
@@ -85,17 +92,17 @@ return (<section id ="portfolio">
                 <div className='text-center mt-6'>
                     
                 {
-                    nextItems < portfolios?.length && data.length >6 && (
+                    nextItems < portfolios?.length && data.length > 3 && (
 
-                <button onClick= {loadMoreHandler} className='text-white bg-headingColor
+                <button onClick= {loadMoreHandler} className='text-white bg-primaryColor
                                      hover:bg-smallTextColor py-2 px-4 rounded-[8px] font-[500]
                                      ease-in duration-200'>
                                        Load more
                                         </button>
 )}
-                </div>
-          
+                </div>   
     </div>
+     {showModal && <Modal setShowModal={setShowModal} activeId={activeId}/>}
 </section>
 );
 };

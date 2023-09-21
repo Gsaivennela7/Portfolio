@@ -6,15 +6,50 @@ import Confirm from "./Confirm"
 const Contact = () => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [formData,setFormData] = useState({
+        from_name:'',
+        email_from: '',
+        subject:''
+    });
+    const [errors,setErrors] = useState({});
+
+    const handleChange = (e) => {
+            const {name,value} =e.target;
+            setFormData((formData)=>({...formData, [name]: value}         
+            ));
+        }
     
     const sendEmail = async (e) =>{
         e.preventDefault();
+
+        const validationErrors = {}
+            if(!formData.from_name.trim()){
+                validationErrors.from_name = "Name is required"
+            }
+            else{
+                validationErrors.from_name = ""
+            }
+
+            if(!formData.email_from.trim()){
+                validationErrors.email_from = "Email is required"
+            }
+            else if(!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ .test(formData.email_from)){
+                validationErrors.email_from = "Email is not in correct format!!"
+            }
+
+            if(!formData.subject.trim()){
+                validationErrors.subject = "Subject is required"
+            }
+            setErrors(validationErrors);
         try{
-        const res = await  emailjs.sendForm(process.env.REACT_APP_SERVICE_ID, process.env.REACT_APP_TEMPLATE_ID, e.target,process.env.REACT_APP_PUBLIC_KEY)
+            if(Object.keys(validationErrors).length ===0 ){
+                const res = await  emailjs.sendForm(process.env.REACT_APP_SERVICE_ID, process.env.REACT_APP_TEMPLATE_ID, e.target,process.env.REACT_APP_PUBLIC_KEY)
            
             if(res.status === 200){
                 setIsModalOpen(true);
             }
+            }
+        
         }catch(err){
             console.log(err);
         }
@@ -47,26 +82,31 @@ const Contact = () => {
                             <input type="text" 
                                 name = "from_name"
                                 placeholder="Enter your name"
-                                className="w-full p-3 focus:outline-none rounded-[5px]"/>          
+                                onChange = {handleChange}
+                                className="w-full p-3 focus:outline-none rounded-[5px]"/>    
+                                {errors.from_name && <span> {errors.from_name} </span>}      
                         </div>
 
                         <div className="mb-5">
                             <input type="text" 
                                     name="email_from"
                                 placeholder="Enter your email"
-                                className="w-full p-3 focus:outline-none rounded-[5px]"/>          
+                                onChange = {handleChange}
+                                className="w-full p-3 focus:outline-none rounded-[5px]"/>  
+                                {errors.email_from && <span> {errors.email_from} </span>}         
                         </div>
 
                         <div className="mb-5">
                             <input type="text" 
                                 name= "subject"
                                 placeholder="Subject"
-                                className="w-full p-3 focus:outline-none rounded-[5px]"/>          
+                                onChange = {handleChange}
+                                className="w-full p-3 focus:outline-none rounded-[5px]"/>  
+                                {errors.subject && <span> {errors.subject} </span>}         
                         </div>
 
                         <div className="mb-5">
                             <input type="text" 
-                                   
                                 placeholder="Write your message"
                                 className="w-full p-3 focus:outline-none rounded-[5px]"/>          
                         </div>

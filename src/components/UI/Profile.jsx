@@ -1,6 +1,7 @@
 import React from 'react';
 import profileImg from '../../assets/images/profileImg.jpeg'
 import CountUp from 'react-countup';
+import resume from "../../assets/resume/Resume_Sai Vennela_Garikapati_SE_.pdf"
 
 const Profile = () =>{
     return (
@@ -32,10 +33,10 @@ const Profile = () =>{
                             <a className='flex' href="#contact"><i className='ri-mail-line'>
                               Hire Me   </i></a>
                         </button>
-                        <a href= "#portfolio" 
-                        className='text-smallTextColor font-[600] text-[16px] border-b border-solid
+                       
+                        <a href={resume} download = "Resume_Sai Vennela_Garikapati.pdf"className='text-smallTextColor font-[500] text-[16px] border-b border-solid
                         border-smallTextColor'>
-                            See Portfolio
+                                 Resume Download
                         </a>
                         <p data-aos="fade-left"
                         data-aos-duration="1500" className='flex gap-2 text-headingColor
@@ -53,7 +54,9 @@ const Profile = () =>{
                             <span className='text-smallTextColor text-[15px] font-[600]'>
                             Follow Me:
                             </span>
-
+                            
+                            
+   
                             <span>
                                 <a href="https://www.youtube.com/channel/UC4VQETdGw7obCKEzS1UZfaw" className='text-smallTextColor text-[18px] font-[600]'>
                                     <i class="ri-youtube-line"></i>

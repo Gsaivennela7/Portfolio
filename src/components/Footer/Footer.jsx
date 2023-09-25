@@ -54,9 +54,12 @@ const Footer = () =>{
 
                 </div>
             </div>
-            <div className='h-[20px] bg-[000000]'>
-                <p className='text-white text-[14px] mt-[20px] pl-[30%]'>
-                    Copyright {year} @ Developed by sai vennela garikapti-All rights reserved
+            <div className='h-[50px] bg-black'>
+                <p className='text-white text-[14px] mt-[20px] pl-[35%]'>
+                    Copyright {year} @ Developed by sai vennela garikapati
+                </p>
+                <p className='text-white text-[14px] pl-[43%]'>
+                All rights reserved
                 </p>
             </div>
            

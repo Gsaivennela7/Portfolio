@@ -1,54 +1,31 @@
-import React,{useState} from "react";
+import React,{useState,useRef} from "react";
 import emailjs from "@emailjs/browser";
 import Confirm from "./Confirm"
-
+import {Formik,Field,Form} from "formik";
+import {schema} from "../../Validation.js"
 
 const Contact = () => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [formData,setFormData] = useState({
-        from_name:'',
-        email_from: '',
-        subject:''
-    });
-    const [errors,setErrors] = useState({});
 
-    const handleChange = (e) => {
-            const {name,value} =e.target;
-            setFormData((formData)=>({...formData, [name]: value}         
-            ));
-        }
-    
+    const formikRef = useRef({});
+
+    const handleSubmit = (values,{resetForm})=> {
+
+        sendEmail(values);
+        
+    } 
     const sendEmail = async (e) =>{
         e.preventDefault();
-
-        const validationErrors = {}
-            if(!formData.from_name.trim()){
-                validationErrors.from_name = "Name is required"
-            }
-            else{
-                validationErrors.from_name = ""
-            }
-
-            if(!formData.email_from.trim()){
-                validationErrors.email_from = "Email is required"
-            }
-            else if(!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ .test(formData.email_from)){
-                validationErrors.email_from = "Email is not in correct format!!"
-            }
-
-            if(!formData.subject.trim()){
-                validationErrors.subject = "Subject is required"
-            }
-            setErrors(validationErrors);
         try{
-            if(Object.keys(validationErrors).length ===0 ){
-                const res = await  emailjs.sendForm(process.env.REACT_APP_SERVICE_ID, process.env.REACT_APP_TEMPLATE_ID, e.target,process.env.REACT_APP_PUBLIC_KEY)
+       
+            console.log(formikRef)
+            const res = await  emailjs.sendForm(process.env.REACT_APP_SERVICE_ID, process.env.REACT_APP_TEMPLATE_ID,formikRef.current ,process.env.REACT_APP_PUBLIC_KEY)
            
             if(res.status === 200){
                 setIsModalOpen(true);
             }
-            }
+            
         
         }catch(err){
             console.log(err);
@@ -77,38 +54,44 @@ const Contact = () => {
                 <div className="w-full mt-8 md:mt-0 md:w-1/2 sm:h-[450px] 
                 lg: flex items-center bg-indigo-100 px-4
                 lg:px-8 py-8">
-                    <form className="w-full" onSubmit={sendEmail}>
+                <Formik initialValues={{
+        from_name:'',
+        email_from: '',
+        subject:'',
+        message:'',
+    }} validationSchema={schema} onSubmit={sendEmail} >
+                    {({ errors, touched }) => (
+                    <Form className="w-full" ref={formikRef} >
                         <div className="mb-5">
-                            <input type="text" 
+                            <Field type="text" 
                                 name = "from_name"
                                 placeholder="Enter your name"
-                                onChange = {handleChange}
-                                className="w-full p-3 focus:outline-none rounded-[5px]"/>    
-                                {errors.from_name && <span> {errors.from_name} </span>}      
+                                className="w-full p-3 focus:outline-none rounded-[5px]"/>   
+                                {touched.from_name && errors?.from_name && <span>{errors.from_name}</span>}                     
                         </div>
 
+
                         <div className="mb-5">
-                            <input type="text" 
+                            <Field type="text" 
                                     name="email_from"
-                                placeholder="Enter your email"
-                                onChange = {handleChange}
+                                placeholder="Enter your email"  
                                 className="w-full p-3 focus:outline-none rounded-[5px]"/>  
-                                {errors.email_from && <span> {errors.email_from} </span>}         
+                                {touched.email_from && errors?.email_from && <span>{errors.email_from}</span>}                
                         </div>
 
                         <div className="mb-5">
-                            <input type="text" 
+                            <Field 
                                 name= "subject"
                                 placeholder="Subject"
-                                onChange = {handleChange}
-                                className="w-full p-3 focus:outline-none rounded-[5px]"/>  
-                                {errors.subject && <span> {errors.subject} </span>}         
+                                className="w-full p-3 focus:outline-none rounded-[5px]"/>   
+                                {touched.subject && errors?.subject && <span>{errors.subject}</span>}                  
                         </div>
 
                         <div className="mb-5">
-                            <input type="text" 
-                                placeholder="Write your message"
-                                className="w-full p-3 focus:outline-none rounded-[5px]"/>          
+                            <Field 
+                            name= "message"
+                            placeholder="Write your message"
+                            className="w-full p-3 focus:outline-none rounded-[5px]"/>              
                         </div>
 
                         <button className="w-full p-3 focus:outline-none rounded-[5px]
@@ -116,8 +99,9 @@ const Contact = () => {
                         duration-150" type="submit">
                             Send Message
                         </button>
-                    </form>
-                    {isModalOpen && <Confirm isOpen={isModalOpen} onClose={closeModal}/> }
+                        {isModalOpen && <Confirm isOpen={isModalOpen} onClose={closeModal}/> }
+                    </Form> )}            
+                    </Formik>
                 </div>
 
             </div>

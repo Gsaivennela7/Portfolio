@@ -37,12 +37,7 @@ const Modal = ({ activeId, setShowModal }) => {
                             }
                     </div>
 
-                    <a href={portfolio.siteUrl}>
-                        <button className="bg-primaryColor text-white py-2 px-4 my-8 rounded-[8px] font-[500]
-                        hover:bg-headingColor ease-in duration-300">
-                            Live Site
-                        </button>
-                    </a>
+                    
                 </div>
 
                 <button onClick={()=>setShowModal(false)}className="w-[1.8rem] h-[1.8rem] bg-[white] absolute top-[1.2rem] right-[1.2rem] text-[25px]

@@ -1,7 +1,7 @@
 import React from 'react';
 import profileImg from '../../assets/images/profileImg.jpeg'
 import CountUp from 'react-countup';
-import resume from "../../assets/resume/Resume_Sai Vennela_Garikapati_SE_.pdf"
+import resume from "../../assets/resume/Resume_Sai Vennela_Garikapati_SDE.pdf"
 
 const Profile = () =>{
     return (
